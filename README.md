@@ -8,6 +8,5 @@
 2. deployment yaml编辑支持文本替换。
 3.k8s CICD 时，使用多应用发布方式，变更应用名称如果Container选择的是“同名”的方式则Container 保持不变。
 ```
-[详情](https://github.com/open-c3/change/blob/main/20220318.md)
 
 [详情](./20220318.md)
