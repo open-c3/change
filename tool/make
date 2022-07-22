@@ -18,8 +18,8 @@ cd  /data/open-c3-change/tool/$TAG || exit
 
 NEW=$(echo $TAG|grep v2.6|wc -l)
 if [ "X$NEW" == "X1" ];then
-    git log --pretty=format:'[%ad] %s' |egrep 'u -|f -' | awk '{print "> * " $0}' > /data/open-c3-change/${TAG}.md
+    git log --pretty=format:'[%ai] %s' |egrep 'u -|f -' | awk '{print "> * " $0}' > /data/open-c3-change/${TAG}.md
 
 else
-    git log --pretty=format:'[%ad] %s'                  | awk '{print "> * " $0}' > /data/open-c3-change/${TAG}.md
+    git log --pretty=format:'[%ai] %s'                  | awk '{print "> * " $0}' > /data/open-c3-change/${TAG}.md
 fi
