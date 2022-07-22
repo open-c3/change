@@ -1,0 +1,25 @@
+#!/bin/bash
+TAG=$1
+
+if [ "X$TAG" == "X" ];then
+    echo nofind TAG
+    exit
+fi
+
+cd /data/open-c3-change/tool || exit
+
+if [ ! -d $TAG ]; then
+    git clone -b $TAG https://github.com/open-c3/open-c3.git $TAG
+else
+    cd /data/open-c3-change/tool/$TAG && git pull
+fi
+
+cd  /data/open-c3-change/tool/$TAG || exit
+
+NEW=$(echo $TAG|grep v2.6|wc -l)
+if [ "X$NEW" == "X1" ];then
+    git log --pretty=format:'[%ad] %s' |egrep 'u -|f -' | awk '{print "> * " $0}' > /data/open-c3-change/${TAG}.md
+
+else
+    git log --pretty=format:'[%ad] %s'                  | awk '{print "> * " $0}' > /data/open-c3-change/${TAG}.md
+fi

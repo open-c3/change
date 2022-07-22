@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd /data/open-c3-change/tool || exit
+
+cat /data/open-c3-change/README.md | grep '*' | awk -F '[' '{print $2}' | awk -F ']' '{print $1}' | xargs -i{} ./make {}
+
+cd /data/open-c3-change
+
+git add v*.md
+git commit -m "auto update $(date "+%F %H:%M:%S")"
+git push
