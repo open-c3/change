@@ -1,4 +1,7 @@
 #!/bin/bash
+
+C3BASEPATH=$( [[ "$(uname -s)" == Darwin ]] && echo "$HOME/open-c3-workspace" || echo "/data" )
+
 TAG=$1
 
 if [ "X$TAG" == "X" ];then
@@ -6,22 +9,23 @@ if [ "X$TAG" == "X" ];then
     exit
 fi
 
-cd /data/open-c3-change/tool || exit
+cd $C3BASEPATH/open-c3-change/tool || exit
 
 if [ ! -d $TAG ]; then
     git clone -b $TAG https://github.com/open-c3/open-c3.git $TAG
 else
-    cd /data/open-c3-change/tool/$TAG && git pull
+    cd $C3BASEPATH/open-c3-change/tool/$TAG && git pull
 fi
 
-cd  /data/open-c3-change/tool/$TAG || exit
+cd  $C3BASEPATH/open-c3-change/tool/$TAG || exit
 
-NEW=$(echo $TAG|grep v2.6|wc -l)
+NEW=$(echo $TAG|grep v2.6|wc -l | sed 's/[[:blank:]]*//g')
 
-echo "# $TAG" > /data/open-c3-change/${TAG}.md
+
+echo "# $TAG" > $C3BASEPATH/open-c3-change/${TAG}.md
 if [ "X$NEW" == "X1" ];then
-    echo '| 时间 | 更新类型 | 更新内容 | '  >> /data/open-c3-change/${TAG}.md
-    echo '| :----- | :----: | :----- |   '  >> /data/open-c3-change/${TAG}.md
+    echo '| 时间 | 更新类型 | 更新内容 | '  >> $C3BASEPATH/open-c3-change/${TAG}.md
+    echo '| :----- | :----: | :----- |   '  >> $C3BASEPATH/open-c3-change/${TAG}.md
 
     git log --pretty=format:'[%ai] %s'   \
         | egrep 'u -|f -'                \
@@ -29,16 +33,16 @@ if [ "X$NEW" == "X1" ];then
         | sed 's/0800] u -/0800]|更新|/' \
         | sed 's/0800] f -/0800]|修复|/' \
         | sed 's/ +0800\]//'             \
-        | sed 's/|\[/|/'                    >> /data/open-c3-change/${TAG}.md
+        | sed 's/|\[/|/'                    >> $C3BASEPATH/open-c3-change/${TAG}.md
 
 
 else
 
-    echo '| 时间 | 更新内容 |'              >> /data/open-c3-change/${TAG}.md
-    echo '| :----- | :----- |'              >> /data/open-c3-change/${TAG}.md
+    echo '| 时间 | 更新内容 |'              >> $C3BASEPATH/open-c3-change/${TAG}.md
+    echo '| :----- | :----- |'              >> $C3BASEPATH/open-c3-change/${TAG}.md
     git log --pretty=format:'[%ai] %s'  \
         | awk '{print "|" $0" |"}'      \
         | sed 's/0800] /0800]|/'        \
         | sed 's/ +0800\]//'            \
-        | sed 's/|\[/|/'                    >> /data/open-c3-change/${TAG}.md
+        | sed 's/|\[/|/'                    >> $C3BASEPATH/open-c3-change/${TAG}.md
 fi
