@@ -1,10 +1,13 @@
 #!/bin/bash
 
-cd /data/open-c3-change/tool || exit
+C3BASEPATH=$( [[ "$(uname -s)" == Darwin ]] && echo "$HOME/open-c3-workspace" || echo "/data" )
+. $C3BASEPATH/open-c3/Installer/scripts/multi-os-support.sh
 
-cat /data/open-c3-change/README.md | grep '*' | awk -F '[' '{print $2}' | awk -F ']' '{print $1}' | xargs -i{} ./make {}
+cd $C3BASEPATH/open-c3-change/tool || exit
 
-cd /data/open-c3-change
+cat $C3BASEPATH/open-c3-change/README.md | grep '*' | awk -F '[' '{print $2}' | awk -F ']' '{print $1}' | c3xargs ./make {}
+
+cd $C3BASEPATH/open-c3-change
 
 git add v*.md
 git commit -m "auto update $(date "+%F %H:%M:%S")"
