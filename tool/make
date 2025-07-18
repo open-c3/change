@@ -27,13 +27,7 @@ if [ "X$NEW" == "X1" ];then
     echo '| 时间 | 更新类型 | 更新内容 | '  >> $C3BASEPATH/open-c3-change/${TAG}.md
     echo '| :----- | :----: | :----- |   '  >> $C3BASEPATH/open-c3-change/${TAG}.md
 
-    git log --pretty=format:'[%ai] %s'   \
-        | egrep 'u -|f -'                \
-        | awk '{print "|" $0" |"}'       \
-        | sed 's/0800] u -/0800]|更新|/' \
-        | sed 's/0800] f -/0800]|修复|/' \
-        | sed 's/ +0800\]//'             \
-        | sed 's/|\[/|/'                    >> $C3BASEPATH/open-c3-change/${TAG}.md
+    ../gen-changelog.sh                     >> $C3BASEPATH/open-c3-change/${TAG}.md
 
 
 else
